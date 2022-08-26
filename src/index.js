@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const talkerManager = require('./talkerManager');
+const validationMiddleware = require('./middlewares/validationMiddleware');
 
 const app = express();
 app.use(bodyParser.json());
@@ -41,7 +42,7 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Requisito 3 - crie o endpoint POST /login
-app.post('/login', (req, res) => res.status(200)
+app.post('/login', validationMiddleware, (req, res) => res.status(200)
 .json({ token: crypto.randomBytes(8).toString('hex') }));
 
 // Fonte: https://stackoverflow.com/questions/55104802/nodejs-crypto-randombytes-to-string-hex-doubling-size
