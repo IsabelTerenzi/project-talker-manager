@@ -26,3 +26,15 @@ app.get('/talker', async (req, res) => {
   } 
     return res.status(200).send([]);
 });
+
+// Requisito 2 - crie o endpoint GET /talker:id
+app.get('/talker/:id', async (req, res) => {
+  const talkers = await talkerManager.getAllTalkers();
+  const id = Number(req.params.id);
+  const talker = talkers.find((tal) => tal.id === id);
+
+  if (talker) {
+    return res.status(200).json(talker);
+  } 
+    return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+});
