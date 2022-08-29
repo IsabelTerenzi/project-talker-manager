@@ -33,6 +33,25 @@ app.get('/talker', async (req, res) => {
     return res.status(200).send([]);
 });
 
+// Requisito 8 - crie o endpoint GET /talker/search?q=searchTerm
+app.get('/talker/search', validationToken, async (req, res) => {
+  const { q } = req.query;
+  const talkers = await talkerManager.getAllTalkers();
+  const filteredTalkers = talkers.filter((talker) => talker.name.includes(q));
+
+  if (q) {
+    return res.status(200).json(filteredTalkers);
+  }
+
+  if (!q) {
+    return res.status(200).json(talkers);
+  }
+
+  if (!filteredTalkers) {
+    return res.status(200).send([]);
+  }
+});
+
 // Requisito 2 - crie o endpoint GET /talker:id
 app.get('/talker/:id', async (req, res) => {
   const talkers = await talkerManager.getAllTalkers();
