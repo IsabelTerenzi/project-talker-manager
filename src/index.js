@@ -2,7 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const crypto = require('crypto');
 const talkerManager = require('./talkerManager');
-const validationMiddleware = require('./middlewares/validationMiddleware');
+const validationLogin = require('./middlewares/validationLogin');
+const validationTalker = require('./middlewares/validationTalker');
+
+const { validationName, validationAge, validationWatchedAt,
+  validationTalkRate, validationToken, validationTalk } = validationTalker;
 
 const app = express();
 app.use(bodyParser.json());
@@ -42,7 +46,29 @@ app.get('/talker/:id', async (req, res) => {
 });
 
 // Requisito 3 - crie o endpoint POST /login
-app.post('/login', validationMiddleware, (req, res) => res.status(200)
+app.post('/login', validationLogin, (req, res) => res.status(200)
 .json({ token: crypto.randomBytes(8).toString('hex') }));
 
 // Fonte: https://stackoverflow.com/questions/55104802/nodejs-crypto-randombytes-to-string-hex-doubling-size
+
+// Requisito 5 - crie o endpoint POST /talker
+app.post('/talker', validationToken, validationName, validationAge,
+validationTalk, validationWatchedAt, validationTalkRate, async (req, res) => {
+  const manager = req.body;
+  const newTalker = await talkerManager.insertNewTalker(manager);
+  return res.status(201).json(newTalker);
+});
+
+// Requisito 7 - crie o endpoint DELETE /talker/:id
+/* app.delete('/talker/:id', async (req, res) => {
+  const talkers = await talkerManager.getAllTalkers();
+  const { id } = req.params;
+  const talker = talkers.findIndex((tal) => tal.id === Number(id));
+
+  if (talker) {
+    talkers.splice(talker, 1);
+    return res.status(204);
+  } 
+    return res.status(401).json({ message: 'Token inválido' });
+});
+*/

@@ -1,4 +1,4 @@
-const validationMiddleware = (req, res, next) => {
+const validationLogin = (req, res, next) => {
     const login = req.body;
     const { email, password } = login;
 
@@ -20,4 +20,4 @@ const validationMiddleware = (req, res, next) => {
 
 // Requisito 4 - Adicione as validações para o endpoint /login
 
-module.exports = validationMiddleware;
+module.exports = validationLogin;

@@ -1,9 +1,9 @@
 const fs = require('fs').promises;
 const { join } = require('path');
 
-const readTalkerFile = async () => {
-  const path = '/talker.json';
+const path = '/talker.json';
 
+const readTalkerFile = async () => {
   try {
     const contentFile = await fs.readFile(join(__dirname, path), 'utf-8');
     return JSON.parse(contentFile);
@@ -17,6 +17,15 @@ const getAllTalkers = async () => {
   return talkers;
 };
 
+const insertNewTalker = async (talker) => {
+  const talkers = await getAllTalkers();
+  const newTalker = { ...talker, id: talkers.length + 1 };
+  talkers.push(newTalker);
+  await fs.writeFile(join(__dirname, path), JSON.stringify(talkers));
+  return newTalker;
+};
+
 module.exports = {
   getAllTalkers,
+  insertNewTalker,
 };
