@@ -69,15 +69,8 @@ validationWatchedAt, validationRate, async (req, res) => {
 });
 
 // Requisito 7 - crie o endpoint DELETE /talker/:id
-/* app.delete('/talker/:id', async (req, res) => {
-  const talkers = await talkerManager.getAllTalkers();
+app.delete('/talker/:id', validationToken, async (req, res) => {
   const { id } = req.params;
-  const talker = talkers.findIndex((tal) => tal.id === Number(id));
-
-  if (talker) {
-    talkers.splice(talker, 1);
-    return res.status(204);
-  } 
-    return res.status(401).json({ message: 'Token inválido' });
+  await talkerManager.deleteTalker(id);
+  return res.status(204).end();
 });
-*/

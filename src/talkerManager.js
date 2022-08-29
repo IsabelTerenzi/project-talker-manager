@@ -41,8 +41,15 @@ const changeTalkerManager = async (talker, id) => {
   return changedTalker;
 };
 
+const deleteTalker = async (id) => {
+  const talkers = await getAllTalkers();
+  const talkerDelete = talkers.filter((tal) => tal.id !== Number(id));
+  await fs.writeFile(join(__dirname, path), JSON.stringify(talkerDelete));
+};
+
 module.exports = {
   getAllTalkers,
   insertNewTalker,
   changeTalkerManager,
+  deleteTalker,
 };
