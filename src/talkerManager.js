@@ -25,7 +25,24 @@ const insertNewTalker = async (talker) => {
   return newTalker;
 };
 
+const changeTalkerManager = async (talker, id) => {
+  const talkers = await getAllTalkers();
+  let changedTalker;
+
+  for (let i = 0; i < talkers.length; i += 1) {
+    if (talkers[i].id === Number(id)) {
+      talkers[i].name = talker.name;
+      talkers[i].age = talker.age;
+      talkers[i].talk = talker.talk;
+      changedTalker = talkers[i];
+    }
+  }
+  await fs.writeFile(join(__dirname, path), JSON.stringify(talkers));
+  return changedTalker;
+};
+
 module.exports = {
   getAllTalkers,
   insertNewTalker,
+  changeTalkerManager,
 };

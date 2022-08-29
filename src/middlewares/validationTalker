@@ -65,12 +65,12 @@ const validationWatchedAt = (req, res, next) => {
   next();
 };
 
-const validationTalkRate = (req, res, next) => {
+const validationRate = (req, res, next) => {
   const talker = req.body;
   const { talk } = talker;
   const { rate } = talk;
 
-  if (!rate) {
+  if (!rate && rate !== 0) {
     return res.status(400).json({ message: 'O campo "rate" é obrigatório' });
   }
   if (rate < 1 || rate > 5) {
@@ -85,6 +85,6 @@ module.exports = {
   validationAge,
   validationTalk,
   validationWatchedAt,
-  validationTalkRate,
+  validationRate,
   validationToken,
 };
